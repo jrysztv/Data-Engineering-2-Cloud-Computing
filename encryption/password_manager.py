@@ -17,7 +17,7 @@ def encrypt(password: str) -> str:
     # Remember to:
     # 1. Encode the password string
     # 2. Use hexdigest() to get the hash
-    pass
+    return hashlib.sha256(password.encode()).hexdigest()
 
 
 # Test your encrypt function
@@ -45,6 +45,34 @@ test_encrypt()
 #     "bob": "different_hashed_password_here"
 # }
 
+# %%
+users = {}
+
+username = "alice"
+password = "password123"
+new_password = "newpassword123"
+
+users["alice"] = [encrypt(password)]
+
+print(users)
+
+if encrypt(new_password) not in users["alice"]:
+    users["alice"] = encrypt(new_password)
+
+print({"alice": users["alice"][-1]})
+
+print(users["alice"] == encrypt("password123"))
+print(users["alice"] == encrypt("newpassword123"))
+print(users["alice"] == encrypt("newpassword123"))
+
+if username not in users.keys():
+    print("not in")
+    if encrypt(password) not in users[username]:
+        users[username] = encrypt(password)
+
+
+# %%
+
 
 def add_update_user(users: dict, username: str, password: str) -> None:
     """
@@ -61,7 +89,8 @@ def add_update_user(users: dict, username: str, password: str) -> None:
     add_user(users, "alice", "newpass123")
     returns {"alice": "new_hash"} where new_hash is encrypt("newpass123")
     """
-    pass
+    users[username] = encrypt(password)
+    return users
 
 
 def test_add_update_user():
@@ -97,7 +126,7 @@ def check_password(users: dict, username: str, password: str) -> bool:
     # 1. The username exists in the database
     # 2. The hashed password matches what's stored
     # Hint: Use the encrypt() function on the password before comparing!
-    pass
+    return username in users and users[username] == encrypt(password)
 
 
 # Test your check_password function
@@ -130,7 +159,21 @@ def add_user_with_requirements(users: dict, username: str, password: str) -> boo
     - Contains at least one uppercase letter
     Returns False if requirements aren't met
     """
-    pass
+
+    if invalid_password(password):
+        return False
+
+    users[username] = encrypt(password)
+    return True
+
+
+def invalid_password(password):
+    less_than_eight = len(password) < 8
+    no_digits = not any(char.isdigit() for char in password)
+    no_uppercase = not any(char.isupper() for char in password)
+
+    not_meeting_requirements = less_than_eight or no_digits or no_uppercase
+    return not_meeting_requirements
 
 
 # Test your password requirements

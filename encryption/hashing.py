@@ -71,5 +71,4 @@ print(f"Hash 2:    {hash2}")
 # Each hash is 64 characters, and the number of possible values is enormous
 print(f"The SHA-256 hash is always {len(hashed_message)} characters long and it can take the values 0-9a-f.")
 print(f"Number of possible hashes: {16 ** len(hashed_message)}")
-
 # %%

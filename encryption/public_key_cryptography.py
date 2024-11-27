@@ -34,7 +34,7 @@ public_key_cipher = PKCS1_OAEP.new(public_key)
 
 # Encrypt our message - only someone with the private key can decrypt it
 encrypted_message = public_key_cipher.encrypt(short_secret_message)
-print(f"Encrypted message:")
+print("Encrypted message:")
 print(encrypted_message)
 
 # Save the encrypted message to a file
